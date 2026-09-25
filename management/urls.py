@@ -1,12 +1,12 @@
 from django.urls import path
-from management import views
+from . import views
 
 urlpatterns = [
-    path('', views.addStudent, name='addStudent'),
-    path('student/call/<int:id>/', views.studentIdCall, name='studentIdCall'),
-    path('student/update/', views.updateStudent, name='updateStudent'),
-    path('student/delete/<int:id>/', views.deleteStudent, name='deleteStudent'),
-    path('login/', views.loginView, name='loginView'),
-    path('logout/', views.logoutView, name='logoutView'),
-    path('change-password/', views.changePassword, name='changePassword'),
+    path('', views.DashboardView.as_view(), name='addStudent'),
+    path('student/edit/<int:pk>/', views.StudentEditCallView.as_view(), name='studentIdCall'),
+    path('student/update/<int:pk>/', views.StudentUpdateView.as_view(), name='updateStudent'),
+    path('student/delete/<int:pk>/', views.StudentDeleteView.as_view(), name='deleteStudent'),
+    path('login/', views.UserLoginView.as_view(), name='loginView'),
+    path('logout/', views.UserLogoutView.as_view(), name='logoutView'),
+    path('password/', views.UserPasswordChangeView.as_view(), name='changePassword'),
 ]

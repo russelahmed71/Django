@@ -1,114 +1,49 @@
-from django.shortcuts import render, redirect, get_object_or_404 # <-- Added get_object_or_404 here
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from .models import Student
 
+class DashboardView(LoginRequiredMixin, SuccessMessageMixin, CreateView, ListView):
+    model = Student
+    template_name = 'add_student.html'
+    fields = ['name', 'roll', 'semester', 'department', 'profile_pic']
+    context_object_name = 'students'
+    success_url = reverse_lazy('addStudent')
+    success_message = "Student record added successfully!"
+    login_url = 'loginView'
 
-@login_required(login_url='loginView') 
-def addStudent(request):
-    if request.method == "POST":
-        s_name = request.POST.get('name')
-        s_roll = request.POST.get('roll')
-        s_semester = request.POST.get('semester')
-        s_department = request.POST.get('department')
-        s_image = request.FILES.get('profile_pic')
+class StudentEditCallView(LoginRequiredMixin, UpdateView):
+    model = Student
+    template_name = 'update_student.html'
+    fields = ['name', 'roll', 'semester', 'department', 'profile_pic']
+    login_url = 'loginView'
 
-        new_student = Student(
-            name=s_name,
-            roll=s_roll,
-            semester=s_semester,
-            department=s_department,
-            profile_pic=s_image
-        )
-        new_student.save()
-        messages.success(request, "Student record added successfully!")
-        return redirect('addStudent')
+class StudentUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Student
+    fields = ['name', 'roll', 'semester', 'department', 'profile_pic']
+    success_url = reverse_lazy('addStudent')
+    success_message = "Student record updated successfully!"
+    login_url = 'loginView'
+class StudentDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Student
+    success_url = reverse_lazy('addStudent')
+    success_message = "Student record deleted successfully!"
+    login_url = 'loginView'
+    
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
-    students = Student.objects.all()
-    return render(request, 'add_student.html', {'students': students})
+class UserLoginView(SuccessMessageMixin, LoginView):
+    template_name = 'login.html'
+    success_message = "Welcome back!"
 
+class UserLogoutView(LogoutView):
+    next_page = 'loginView'
 
-@login_required(login_url='loginView')
-def studentIdCall(request, id):
-    student = get_object_or_404(Student, id=id)
-    return render(request, 'update_student.html', {'student': student})
-
-
-@login_required(login_url='loginView')
-def updateStudent(request):
-    if request.method == "POST":
-        student_id = request.POST.get('id')
-        student = get_object_or_404(Student, id=student_id)
-        
-        student.name = request.POST.get('name')
-        student.roll = request.POST.get('roll')
-        student.semester = request.POST.get('semester')
-        student.department = request.POST.get('department')
-        
-        new_image = request.FILES.get('profile_pic')
-        if new_image:
-            student.profile_pic = new_image  
-
-        student.save()
-        messages.success(request, "Student record updated successfully!")
-        
-    return redirect('addStudent')
-
-
-@login_required(login_url='loginView')
-def deleteStudent(request, id):
-    student = get_object_or_404(Student, id=id)
-    student.delete()
-    messages.success(request, "Student record deleted successfully!")
-    return redirect('addStudent')
-
-
-
-def loginView(request):
-    if request.method == "POST":
-        uname = request.POST.get('username')
-        upass = request.POST.get('password')
-        
-        user = authenticate(request, username=uname, password=upass)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('addStudent')
-        else:
-            messages.error(request, "Invalid username or password.")
-            return redirect('loginView')
-            
-    return render(request, 'login.html')
-
-
-def logoutView(request): 
-    logout(request)
-    return redirect('loginView')
-
-
-@login_required(login_url='loginView')
-def changePassword(request):
-    if request.method == "POST":
-        old_pass = request.POST.get('old_password')
-        new_pass = request.POST.get('new_password')
-        confirm_pass = request.POST.get('confirm_password')
-        
-        user = request.user
-        
-        if not user.check_password(old_pass):
-            messages.error(request, "Your current password was entered incorrectly.")
-            return redirect('changePassword')
-            
-        if new_pass != confirm_pass:
-            messages.error(request, "The two new password fields didn't match.")
-            return redirect('changePassword')
-            
-        user.set_password(new_pass)
-        user.save()
-        
-        update_session_auth_hash(request, user)
-        messages.success(request, "Your password was successfully updated!")
-        return redirect('addStudent')
-        
-    return render(request, 'change_password.html')
+class UserPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'change_password.html'
+    success_url = reverse_lazy('addStudent')
+    success_message = "Your password was successfully updated!"
