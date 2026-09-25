@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Dashboard{% endblock %}</title>
+    
+    <!-- ⚡ Clean Global Page Layout Styles Only -->
+    <style>
+        body { background-color: #f8f9fa; font-family: system-ui, -apple-system, sans-serif; color: #212529; padding-top: 20px; margin: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; box-sizing: border-box; }
+        
+        /* Global Card Elements */
+        .card { background: #ffffff; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 1.5rem; overflow: hidden; }
+        .card-header { padding: 12px 20px; font-weight: bold; font-size: 1.1rem; border-bottom: 1px solid rgba(0,0,0,0.12); color: #ffffff; }
+        .card-body { padding: 20px; }
+        
+        /* Universal Theme Colors */
+        .bg-success { background-color: #198754 !important; }
+        .bg-dark { background-color: #212529 !important; }
+        .bg-warning { background-color: #ffc107 !important; }
+        
+        /* Grid Layout Framework */
+        .row { display: flex; flex-wrap: wrap; margin: -10px; }
+        .col-md-3, .col-md-2, .col-12 { padding: 10px; box-sizing: border-box; }
+        .col-md-3 { width: 25%; } .col-md-2 { width: 16.66%; } .col-12 { width: 100%; }
+        
+        /* Form Element Configurations */
+        .form-label { display: block; margin-bottom: 6px; font-weight: 600; color: #6c757d; font-size: 0.85rem; text-transform: uppercase; }
+        .form-control { width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 6px; box-sizing: border-box; font-size: 0.95rem; }
+        .form-control:focus { border-color: #198754; outline: none; }
+        
+        /* Universal Action Button Classes */
+        .btn { padding: 8px 16px; border-radius: 6px; font-weight: bold; border: none; cursor: pointer; text-decoration: none; font-size: 0.9rem; display: inline-block; text-align: center; }
+        .btn-success { background-color: #198754; color: #ffffff; }
+        .btn-success:hover { background-color: #157347; }
+        .btn-danger { background-color: #dc3545; color: #ffffff; }
+        .btn-danger:hover { background-color: #bb2d3b; }
+        .btn-warning { background-color: #ffc107; color: #212529; }
+        .btn-warning:hover { background-color: #e0a800; }
+        .btn-sm { padding: 4px 8px; font-size: 0.8rem; }
+        
+        /* Responsive Data Tables */
+        .table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .table th, .table td { padding: 12px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        .table th { background-color: #f8f9fa; color: #6c757d; font-weight: 600; }
+        .table-hover tr:hover { background-color: rgba(0,0,0,0.02); }
+        
+        /* Helper Utility Layout Classes */
+        .rounded-circle { border-radius: 50%; }
+        .badge { display: inline-block; padding: 4px 8px; font-size: 0.75rem; font-weight: 700; border-radius: 4px; color: #fff; background-color: #6c757d; }
+        .text-end { text-align: right; } .text-center { text-align: center; }
+        
+        @media(max-width: 768px) { .col-md-3, .col-md-2 { width: 100%; } }
+    </style>
+</head>
+<body>
+
+    <!-- ⚡ Include target file cleanly -->
+    {% include 'navbar.html' %}
+
+    <!-- Core Content Block Window Container -->
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

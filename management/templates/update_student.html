@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Edit Student Profile{% endblock %}
+
+{% block content %}
+<div class="row" style="justify-content: center; display: flex;">
+    <!-- Centered Form Container Column -->
+    <div class="col-12" style="max-width: 800px; width: 100%;">
+        <div class="card">
+            <div class="card-header bg-warning" style="color: #212529;">✏️ Edit Student Profile</div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'updateStudent' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Hidden input to safely pass student ID back to views.py -->
+                    <input type="hidden" name="id" value="{{ student.id }}">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" name="name" class="form-control" value="{{ student.name }}" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Roll No.</label>
+                            <input type="number" name="roll" class="form-control" value="{{ student.roll }}" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Semester</label>
+                            <input type="text" name="semester" class="form-control" value="{{ student.semester }}" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Department</label>
+                            <input type="text" name="department" class="form-control" value="{{ student.department }}" required>
+                        </div>
+                        
+                        <!-- Profile Image Section -->
+                        <div class="col-12" style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #dee2e6; display: flex; align-items: center; gap: 20px;">
+                            <div class="text-center">
+                                <span style="display: block; font-size: 0.75rem; font-weight: bold; color: #6c757d; margin-bottom: 5px; text-transform: uppercase;">Current Photo</span>
+                                {% if student.profile_pic %}
+                                    <img src="{{ student.profile_pic.url }}" alt="Current Av" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover; border: 1px solid #ced4da;">
+                                {% else %}
+                                    <div class="rounded-circle" style="width: 60px; height: 60px; background-color: #6c757d; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">No Pic</div>
+                                {% endif %}
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <label class="form-label">Upload New Profile Picture (Optional)</label>
+                                <input type="file" name="profile_pic" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+
+                        <!-- Lower Navigation Actions Button Row -->
+                        <div class="col-12 text-end" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <a href="{% url 'addStudent' %}" class="btn" style="background-color: #6c757d; color: white;">Cancel Changes</a>
+                            <button type="submit" class="btn btn-warning" style="font-weight: bold;">Save Profile Changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

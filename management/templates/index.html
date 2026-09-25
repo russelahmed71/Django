@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Welcome - Student Management System{% endblock %}
+
+{% block content %}
+<div class="row align-items-center justify-content-center py-5" style="min-height: 75vh;">
+    <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold text-dark lh-sm mb-3">
+            Manage Student Records <br>
+            <span class="text-success">Effortlessly & Securely</span>
+        </h1>
+        <p class="lead text-secondary mb-4">
+            Welcome to SMS Pro. A streamlined administrative dashboard designed to add, update, track, and maintain student database profiles with lightning speed.
+        </p>
+        
+        <div class="d-grid gap-3 d-md-flex justify-content-center justify-content-lg-start">
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'addStudent' %}" class="btn btn-success btn-lg px-4 me-md-2 fw-bold shadow-sm">Go to Dashboard →</a>
+            {% else %}
+                <a href="{% url 'loginView' %}" class="btn btn-success btn-lg px-4 me-md-2 fw-bold shadow-sm">Get Started</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Feature Highlights Column -->
+    <div class="col-lg-5 mt-5 mt-lg-0">
+        <div class="card bg-white border-0 shadow-sm p-4">
+            <h4 class="fw-bold text-dark mb-4">✨ System Features</h4>
+            <div class="d-flex align-items-start mb-3">
+                <div class="bg-success-subtle text-success rounded p-2 me-3 fw-bold">📝</div>
+                <div>
+                    <h6 class="fw-bold mb-1">CRUD Management</h6>
+                    <p class="text-muted small mb-0">Create, Read, Update, and Delete student profiles seamlessly.</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-start mb-3">
+                <div class="bg-primary-subtle text-primary rounded p-2 me-3 fw-bold">🖼️</div>
+                <div>
+                    <h6 class="fw-bold mb-1">Profile Photo Uploads</h6>
+                    <p class="text-muted small mb-0">Upload and render student avatars automatically.</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-start">
+                <div class="bg-warning-subtle text-warning-dominant rounded p-2 me-3 fw-bold">🔒</div>
+                <div>
+                    <h6 class="fw-bold mb-1">Secure Authentication</h6>
+                    <p class="text-muted small mb-0">Protected routes ensuring only authorized users access data.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
