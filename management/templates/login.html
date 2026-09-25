@@ -1,30 +1,42 @@
 {% extends 'base.html' %}
-{% block title %}Sign In - Student System{% endblock %}
+
+{% block title %}Login - Student Management{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
     <div class="col-md-4">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger shadow-sm" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <div class="card shadow border-0">
-            <div class="card-header bg-success py-3 text-center">
-                <h3 class="mb-0 text-white fw-bold">System Login</h3>
+            <div class="card-header bg-dark text-white text-center fw-bold py-3">
+                🔐 Account Login
             </div>
             <div class="card-body p-4">
-                <form method="POST" action="{% url 'loginView' %}">
+                <form method="POST">
                     {% csrf_token %}
+                    
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-secondary">Username</label>
-                        <input type="text" name="username" class="form-control form-control-lg" placeholder="Enter username" required>
+                        <label for="usernameInput" class="form-label small fw-bold text-secondary">Username</label>
+                        <input type="text" name="username" id="usernameInput" class="form-control form-control-lg" placeholder="Enter username" required>
                     </div>
+
                     <div class="mb-4">
-                        <label class="form-label fw-bold text-secondary">Password</label>
-                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Enter password" required>
+                        <label for="passwordInput" class="form-label small fw-bold text-secondary">Password</label>
+                        <input type="password" name="password" id="passwordInput" class="form-control form-control-lg" placeholder="Enter password" required>
                     </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">Sign In</button>
-                    </div>
+
+                    <button type="submit" class="btn btn-dark w-100 fw-bold py-2 shadow-sm text-white">Sign In</button>
                 </form>
             </div>
         </div>
+        
     </div>
 </div>
 {% endblock %}

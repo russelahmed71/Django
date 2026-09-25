@@ -1,62 +1,63 @@
 {% extends 'base.html' %}
-{% block title %}Edit Student Profile{% endblock %}
+
+{% block title %}Update Student Record{% endblock %}
 
 {% block content %}
-<div class="row" style="justify-content: center; display: flex;">
-    <!-- Centered Form Container Column -->
-    <div class="col-12" style="max-width: 800px; width: 100%;">
-        <div class="card">
-            <div class="card-header bg-warning" style="color: #212529;">✏️ Edit Student Profile</div>
-            <div class="card-body">
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-warning text-dark fw-bold py-3 d-flex align-items-center justify-content-between">
+                <span>✏️ Update Student Profile</span>
+                <a href="{% url 'addStudent' %}" class="btn btn-sm btn-outline-dark fw-bold px-3 rounded-pill">Back to Dashboard</a>
+            </div>
+            <div class="card-body p-4">
                 <form method="POST" action="{% url 'updateStudent' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     
-                    <!-- Hidden input to safely pass student ID back to views.py -->
                     <input type="hidden" name="id" value="{{ student.id }}">
 
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" name="name" class="form-control" value="{{ student.name }}" required>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">Roll No.</label>
-                            <input type="number" name="roll" class="form-control" value="{{ student.roll }}" required>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">Semester</label>
-                            <input type="text" name="semester" class="form-control" value="{{ student.semester }}" required>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">Department</label>
-                            <input type="text" name="department" class="form-control" value="{{ student.department }}" required>
-                        </div>
-                        
-                        <!-- Profile Image Section -->
-                        <div class="col-12" style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #dee2e6; display: flex; align-items: center; gap: 20px;">
-                            <div class="text-center">
-                                <span style="display: block; font-size: 0.75rem; font-weight: bold; color: #6c757d; margin-bottom: 5px; text-transform: uppercase;">Current Photo</span>
-                                {% if student.profile_pic %}
-                                    <img src="{{ student.profile_pic.url }}" alt="Current Av" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover; border: 1px solid #ced4da;">
-                                {% else %}
-                                    <div class="rounded-circle" style="width: 60px; height: 60px; background-color: #6c757d; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">No Pic</div>
-                                {% endif %}
+                    <div class="text-center mb-4">
+                        {% if student.profile_pic %}
+                            <img src="{{ student.profile_pic.url }}" alt="Current Profile" class="rounded-circle border shadow-sm" style="width: 90px; height: 90px; object-fit: cover;">
+                        {% else %}
+                            <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 90px; height: 90px; font-size: 32px;">
+                                {{ student.name|slice:":1"|upper }}
                             </div>
-                            <div style="flex-grow: 1;">
-                                <label class="form-label">Upload New Profile Picture (Optional)</label>
-                                <input type="file" name="profile_pic" class="form-control" accept="image/*">
-                            </div>
-                        </div>
-
-                        <!-- Lower Navigation Actions Button Row -->
-                        <div class="col-12 text-end" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                            <a href="{% url 'addStudent' %}" class="btn" style="background-color: #6c757d; color: white;">Cancel Changes</a>
-                            <button type="submit" class="btn btn-warning" style="font-weight: bold;">Save Profile Changes</button>
-                        </div>
+                        {% endif %}
+                        <div class="small text-muted mt-2">Current Profile Picture</div>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="editName" class="form-label small fw-bold text-secondary">Full Name</label>
+                        <input type="text" name="name" id="editName" class="form-control" value="{{ student.name }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editRoll" class="form-label small fw-bold text-secondary">Roll No.</label>
+                        <input type="text" name="roll" id="editRoll" class="form-control" value="{{ student.roll }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editSemester" class="form-label small fw-bold text-secondary">Semester</label>
+                        <input type="text" name="semester" id="editSemester" class="form-control" value="{{ student.semester }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editDepartment" class="form-label small fw-bold text-secondary">Department</label>
+                        <input type="text" name="department" id="editDepartment" class="form-control" value="{{ student.department }}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="editPicture" class="form-label small fw-bold text-secondary">Change Profile Picture (Optional)</label>
+                        <input type="file" name="profile_pic" id="editPicture" class="form-control" accept="image/*">
+                    </div>
+
+                    <button type="submit" class="btn btn-warning w-100 fw-bold py-2 shadow-sm text-dark">Save Modifications</button>
                 </form>
             </div>
         </div>
+
     </div>
 </div>
 {% endblock %}
